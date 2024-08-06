@@ -1,9 +1,7 @@
 package com.RentEase.RentEase_backend.entities;
 
 import com.RentEase.RentEase_backend.enums.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -27,5 +25,9 @@ public class User {
     private int pinCode;
     private String state;
     private Role role;
+
+    // Relationships
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Landlord landlord;
 
 }
