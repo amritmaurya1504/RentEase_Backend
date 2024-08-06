@@ -37,4 +37,13 @@ RentEase is a comprehensive Rental Management System designed to streamline the 
 
 ![ER Diagram](https://res.cloudinary.com/amritrajmaurya/image/upload/v1722873465/Screenshot_2024-08-05_153739_zscie3.png)
 
+### To Encrypt/Decrypt Username and Password of application.properties file use below commands
+
+```dtd
+To Encrypt:
+        mvn -X jasypt:encrypt-value "-Djasypt.encryptor.password=your_secret" "-Djasypt.plugin.value=your_value" 
+To Decrypt:
+        mvn jasypt:decrypt-value "-Djasypt.encryptor.password=your_secret" "-Djasypt.plugin.value=ENC(Xm9n9QtBj3oAhySxPINgLqBOBN3dszzRJGifVbo4y7DUkyKgdPwmNmUlRCq3V8Sj)"
+```
+
 RentEase aims to simplify rental property management, ensuring an efficient and hassle-free experience for both landlords and tenants.

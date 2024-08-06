@@ -1,0 +1,17 @@
+server:
+  port: 8084
+
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/rentease-db
+    username: ENC(Xm9n9QtBj3oAhySxPINgLqBOBN3dszzRJGifVbo4y7DUkyKgdPwmNmUlRCq3V8Sj)
+    password: ENC(BJO0SQ+ooiuhtGV/puCFBNMaxLbouMEyytABJe/GzVGFjEX/kFNS3NGXdzdgxV5O)
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  application:
+    name: RentEase-Server
