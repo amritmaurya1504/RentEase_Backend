@@ -6,15 +6,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.*;
 
-@Getter
+@Entity(name = "tenant_table")
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "landlord_table")
-public class Landlord {
+public class Tenant {
     @Id
-    private String landlordId;
+    private String tenantId;
     private String joinedDate;
 
     @OneToOne

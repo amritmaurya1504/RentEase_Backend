@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<APIResponse> handleGenericException(Exception ex) {
         APIResponse apiResponse = APIResponse.builder()
-                .message("An unexpected error occurred")
+                .message(ex.getMessage())
                 .success(false) // Set to false for errors
                 .status(HttpStatus.INTERNAL_SERVER_ERROR) // Use HttpStatus value for the status code
                 .build();

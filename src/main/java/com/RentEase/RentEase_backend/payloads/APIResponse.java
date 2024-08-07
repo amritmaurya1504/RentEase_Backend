@@ -8,8 +8,9 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class APIResponse {
+public class APIResponse <T>{
     private String message;
     private boolean success;
     private HttpStatus status;
+    private T data;
 }

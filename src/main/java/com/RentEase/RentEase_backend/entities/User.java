@@ -30,4 +30,7 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Landlord landlord;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Tenant tenant;
+
 }

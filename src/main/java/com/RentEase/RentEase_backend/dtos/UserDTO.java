@@ -1,5 +1,6 @@
 package com.RentEase.RentEase_backend.dtos;
 
+import com.RentEase.RentEase_backend.entities.Landlord;
 import com.RentEase.RentEase_backend.enums.Role;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -48,4 +49,8 @@ public class UserDTO {
 
     @NotNull(message = "Role cannot be null")
     private Role role;
+
+    private LandlordDTO landlord;
+    private TenantDTO tenant;
+
 }
