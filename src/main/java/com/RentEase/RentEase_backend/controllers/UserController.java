@@ -19,7 +19,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @PostMapping("/register")
     public APIResponse<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO){
         UserDTO createdUser = this.userService.createUser(userDTO);
         return new APIResponse<UserDTO>("User Created Successfully!",
