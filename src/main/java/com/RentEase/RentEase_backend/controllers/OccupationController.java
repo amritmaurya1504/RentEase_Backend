@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/occupation")
+@RequestMapping("/api/v1/occupation")
 public class OccupationController {
 
     @Autowired

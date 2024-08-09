@@ -35,10 +35,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/properties/**").hasAnyAuthority(Role.Landlord.name())
-                        .requestMatchers("/tenant/**").hasAnyAuthority(Role.Tenant.name())
-                        .requestMatchers("/users/**").hasAnyAuthority(Role.Landlord.name(), Role.Tenant.name())
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/landlords/properties/**").hasAnyAuthority(Role.Landlord.name())
+                        .requestMatchers("/api/v1/occupation/**").hasAnyAuthority(Role.Tenant.name())
+                        .requestMatchers("/api/v1/users/**").hasAnyAuthority(Role.Landlord.name(), Role.Tenant.name())
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
