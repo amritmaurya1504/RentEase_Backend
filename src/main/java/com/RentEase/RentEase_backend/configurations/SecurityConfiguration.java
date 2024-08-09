@@ -31,14 +31,26 @@ public class SecurityConfiguration {
     @Autowired
     private CustomeUserDetailsService customeUserDetailsService;
 
+    public static final String[] PUBLIC_MATCHERS = {
+            "/api/v1/auth/**"
+    };
+    public static final String[] LANDLORD_MATCHERS = {
+            "/api/v1/properties/**",
+            "/api/v1/users/**"
+    };
+    public static final String[] TENANT_MATCHERS = {
+            "/api/v1/occupation/**",
+            "/api/v1/users/**"
+    };
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/landlords/properties/**").hasAnyAuthority(Role.Landlord.name())
-                        .requestMatchers("/api/v1/occupation/**").hasAnyAuthority(Role.Tenant.name())
-                        .requestMatchers("/api/v1/users/**").hasAnyAuthority(Role.Landlord.name(), Role.Tenant.name())
+                        .requestMatchers(PUBLIC_MATCHERS).permitAll()
+                        .requestMatchers(LANDLORD_MATCHERS).hasAnyAuthority(Role.Landlord.name())
+                        .requestMatchers(TENANT_MATCHERS).hasAnyAuthority(Role.Tenant.name())
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(

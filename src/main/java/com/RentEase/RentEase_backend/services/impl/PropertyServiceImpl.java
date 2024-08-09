@@ -69,6 +69,11 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public List<PropertyDTO> getAllPropertiesOfLandlord(String landlordId) {
+        Landlord landlord = landlordRepo.findById(landlordId).orElseThrow(
+                () -> new ResourceNotFoundException
+                        ("Landlord doesn't exist with id: " + landlordId)
+        );
+
         List<Property> allProperties = propertyRepo.findByLandlordLandlordId(landlordId);
         return allProperties.stream().map((property) ->
                 this.modelMapper.map(property, PropertyDTO.class)).toList();

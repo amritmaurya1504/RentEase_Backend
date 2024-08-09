@@ -85,9 +85,8 @@ public class AuthController {
         if(jwtHelper.isTokenValid(refreshTokenRequestDTO.getToken(), userDetails)){
             String accessToken = this.jwtHelper.generateToken(userDetails);
             String refreshToken = this.jwtHelper.generateRefreshToken(new HashMap<>(),userDetails);
-            logger.info("NEW TOKEN GENERATED");
             return UserAuthResponseDTO.builder()
-                    .message("User Logged successfully!")
+                    .message("Token Refreshed successfully!")
                     .success(true)
                     .status(HttpStatus.OK)
                     .user(this.modelMapper.map(userDetails, UserDTO.class))
