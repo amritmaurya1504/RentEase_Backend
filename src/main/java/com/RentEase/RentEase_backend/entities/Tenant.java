@@ -1,9 +1,6 @@
 package com.RentEase.RentEase_backend.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity(name = "tenant_table")
@@ -20,4 +17,7 @@ public class Tenant {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToOne(mappedBy = "tenant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Occupation occupation;
 }
