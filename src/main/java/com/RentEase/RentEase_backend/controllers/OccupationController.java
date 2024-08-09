@@ -3,6 +3,7 @@ package com.RentEase.RentEase_backend.controllers;
 import com.RentEase.RentEase_backend.dtos.OccupationDTO;
 import com.RentEase.RentEase_backend.payloads.APIResponse;
 import com.RentEase.RentEase_backend.services.OccupationService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/occupation")
+@Tag(name = "Occupation Controller", description = "Operations related to occupations, accessible only by Tenant")
 public class OccupationController {
 
     @Autowired

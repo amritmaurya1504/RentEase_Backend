@@ -1,4 +1,4 @@
-package com.RentEase.RentEase_backend.configurations;
+package com.RentEase.RentEase_backend.config;
 
 import com.RentEase.RentEase_backend.enums.Role;
 import com.RentEase.RentEase_backend.security.CustomeUserDetailsService;
@@ -32,7 +32,10 @@ public class SecurityConfiguration {
     private CustomeUserDetailsService customeUserDetailsService;
 
     public static final String[] PUBLIC_MATCHERS = {
-            "/api/v1/auth/**"
+            "/api/v1/auth/**",
+            "/swagger-ui/**",
+            "/swagger-resources/*",
+            "/v3/api-docs/**"
     };
     public static final String[] LANDLORD_MATCHERS = {
             "/api/v1/properties/**",

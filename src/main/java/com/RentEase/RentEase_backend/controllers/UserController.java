@@ -4,16 +4,19 @@ import com.RentEase.RentEase_backend.dtos.UserDTO;
 import com.RentEase.RentEase_backend.dtos.UserUpdateDTO;
 import com.RentEase.RentEase_backend.payloads.APIResponse;
 import com.RentEase.RentEase_backend.services.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@Tag(name = "User Controller", description = "Operations related to user management")
 public class UserController {
 
     @Autowired

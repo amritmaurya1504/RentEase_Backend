@@ -4,6 +4,7 @@ import com.RentEase.RentEase_backend.dtos.PropertyDTO;
 import com.RentEase.RentEase_backend.dtos.PropertyUpdateDTO;
 import com.RentEase.RentEase_backend.payloads.APIResponse;
 import com.RentEase.RentEase_backend.services.PropertyService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/properties")
+@Tag(name = "Property Controller", description = "Operations related to properties, accessible only by Landlord")
 public class PropertyController {
 
     @Autowired

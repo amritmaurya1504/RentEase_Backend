@@ -8,6 +8,7 @@ import com.RentEase.RentEase_backend.exceptions.UserNotAuthorizedException;
 import com.RentEase.RentEase_backend.payloads.APIResponse;
 import com.RentEase.RentEase_backend.security.JWTHelper;
 import com.RentEase.RentEase_backend.services.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@Tag(name = "Auth Controller", description = "Authentication related operations, accessible publicly")
 public class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
@@ -45,6 +47,7 @@ public class AuthController {
 
     @Autowired
     private ModelMapper modelMapper;
+
 
     @PostMapping("/register")
     public APIResponse<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO){
