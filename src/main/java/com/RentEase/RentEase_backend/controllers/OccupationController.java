@@ -38,4 +38,10 @@ public class OccupationController {
                 true, HttpStatus.CREATED, occupation);
     }
 
+    @GetMapping("/tenant/{tenantId}")
+    private APIResponse<OccupationDTO> getOccupationByTenantId(@PathVariable String tenantId){
+        return new APIResponse<>("Fetched Successfully!",
+                true, HttpStatus.OK, occupationService.getOccupationByTenantId(tenantId));
+    }
+
 }

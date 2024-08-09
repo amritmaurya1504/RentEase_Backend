@@ -15,4 +15,7 @@ public interface UserService {
     List<UserDTO> getAllUsers();
     void deleteUser(String userId);
 
+    UserDTO getTenant(String tenantId);
+    UserDTO getLandlord(String landlordId);
+
 }

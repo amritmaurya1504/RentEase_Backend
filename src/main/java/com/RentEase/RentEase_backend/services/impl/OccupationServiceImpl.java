@@ -75,4 +75,16 @@ public class OccupationServiceImpl implements OccupationService {
         return this.modelMapper.map(updatedOccupation, OccupationDTO.class);
     }
 
+    @Override
+    public OccupationDTO getOccupationByTenantId(String tenantId) {
+        Tenant tenant = tenantRepo.findById(tenantId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Tenant doesn't exists with id: " + tenantId));
+
+        Occupation occupation = occupationRepo.findByTenantTenantId(tenantId);
+
+        return this.modelMapper.map(occupation, OccupationDTO.class);
+    }
+
+
 }

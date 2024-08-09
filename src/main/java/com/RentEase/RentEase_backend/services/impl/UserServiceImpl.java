@@ -9,6 +9,7 @@ import com.RentEase.RentEase_backend.enums.Role;
 import com.RentEase.RentEase_backend.exceptions.ResourceNotFoundException;
 import com.RentEase.RentEase_backend.exceptions.UserAlreadyExistsException;
 import com.RentEase.RentEase_backend.repositories.LandlordRepo;
+import com.RentEase.RentEase_backend.repositories.TenantRepo;
 import com.RentEase.RentEase_backend.repositories.UserRepo;
 import com.RentEase.RentEase_backend.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -37,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private TenantRepo tenantRepo;
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
@@ -164,5 +168,25 @@ public class UserServiceImpl implements UserService {
                                 "User does not exist with id: " + userId));
 
         userRepo.delete(user);
+    }
+
+    @Override
+    public UserDTO getTenant(String tenantId) {
+        Tenant tenant = tenantRepo.findById(tenantId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Tenant doesn't exists with id: " + tenantId));
+
+        User user = userRepo.findByTenantTenantId(tenantId);
+        return this.modelMapper.map(user, UserDTO.class);
+    }
+
+    @Override
+    public UserDTO getLandlord(String landlordId) {
+        Landlord landlord = landlordRepo.findById(landlordId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Landlord doesn't exists with id: " + landlordId));
+
+        User user = userRepo.findByLandlordLandlordId(landlordId);
+        return this.modelMapper.map(user, UserDTO.class);
     }
 }

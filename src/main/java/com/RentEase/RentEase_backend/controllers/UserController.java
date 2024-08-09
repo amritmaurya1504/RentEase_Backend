@@ -46,4 +46,16 @@ public class UserController {
                 .updateUser(userId, userUpdateDTO));
     }
 
+    @GetMapping("/tenant/{tenantId}")
+    public APIResponse<UserDTO> getTenant(@PathVariable String tenantId){
+        return new APIResponse<>("Fetched Successfully!",
+                true, HttpStatus.OK, userService.getTenant(tenantId));
+    }
+
+    @GetMapping("/landlord/{landlordId}")
+    public APIResponse<UserDTO> getLandlord(@PathVariable String landlordId){
+        return new APIResponse<>("Fetched Successfully!",
+                true, HttpStatus.OK, userService.getLandlord(landlordId));
+    }
+
 }
