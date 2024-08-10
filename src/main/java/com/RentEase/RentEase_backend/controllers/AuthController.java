@@ -95,7 +95,6 @@ public class AuthController {
                     .message("Token Refreshed successfully!")
                     .success(true)
                     .status(HttpStatus.OK)
-                    .user(this.modelMapper.map(userDetails, UserDTO.class))
                     .accessToken(accessToken)
                     .refreshToken(refreshToken).build();
         }
