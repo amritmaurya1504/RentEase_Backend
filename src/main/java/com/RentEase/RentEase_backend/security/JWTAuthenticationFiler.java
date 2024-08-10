@@ -1,5 +1,6 @@
 package com.RentEase.RentEase_backend.security;
 
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.security.SignatureException;
 
 @Component
 public class JWTAuthenticationFiler extends OncePerRequestFilter {
@@ -27,15 +29,16 @@ public class JWTAuthenticationFiler extends OncePerRequestFilter {
     private UserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userName;
 
-        if(StringUtils.isEmpty(authHeader) || !StringUtils.startsWith(
+        if (StringUtils.isEmpty(authHeader) || !StringUtils.startsWith(
                 authHeader, "Bearer "
-        )){
+        )) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -43,10 +46,10 @@ public class JWTAuthenticationFiler extends OncePerRequestFilter {
         jwt = authHeader.substring(7);
         userName = jwtHelper.extractUserName(jwt);
 
-        if(StringUtils.isNoneEmpty(userName) && SecurityContextHolder.getContext()
-                .getAuthentication() == null){
+        if (StringUtils.isNoneEmpty(userName) && SecurityContextHolder.getContext()
+                .getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userName);
-            if(jwtHelper.isTokenValid(jwt, userDetails)){
+            if (jwtHelper.isTokenValid(jwt, userDetails)) {
                 SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
 
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(

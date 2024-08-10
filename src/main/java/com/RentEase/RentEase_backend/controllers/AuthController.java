@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -59,9 +60,11 @@ public class AuthController {
     @PostMapping("/login")
     public UserAuthResponseDTO login(@Valid @RequestBody
                                                       UserAuthRequestDTO userAuthRequestDTO){
+
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 userAuthRequestDTO.getUserName(), userAuthRequestDTO.getPassword()
         ));
+
 
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(
                 userAuthRequestDTO.getUserName()
@@ -95,8 +98,7 @@ public class AuthController {
                     .user(this.modelMapper.map(userDetails, UserDTO.class))
                     .accessToken(accessToken)
                     .refreshToken(refreshToken).build();
-        }else {
-            throw new UserNotAuthorizedException("Invalid Token!");
         }
+        return null;
     }
 }

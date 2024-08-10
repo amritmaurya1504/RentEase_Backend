@@ -2,6 +2,7 @@ package com.RentEase.RentEase_backend.config;
 
 import com.RentEase.RentEase_backend.enums.Role;
 import com.RentEase.RentEase_backend.security.CustomeUserDetailsService;
+import com.RentEase.RentEase_backend.security.JWTAuthenticationEntryPoint;
 import com.RentEase.RentEase_backend.security.JWTAuthenticationFiler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,16 @@ public class SecurityConfiguration {
     @Autowired
     private CustomeUserDetailsService customeUserDetailsService;
 
+    @Autowired
+    private JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+
     public static final String[] PUBLIC_MATCHERS = {
             "/api/v1/auth/**",
             "/swagger-ui/**",
             "/swagger-resources/*",
-            "/v3/api-docs/**"
+            "/v3/api-docs/**",
+            "/api/v1/properties"
     };
     public static final String[] LANDLORD_MATCHERS = {
             "/api/v1/properties/**",
@@ -55,6 +61,7 @@ public class SecurityConfiguration {
                         .requestMatchers(LANDLORD_MATCHERS).hasAnyAuthority(Role.Landlord.name())
                         .requestMatchers(TENANT_MATCHERS).hasAnyAuthority(Role.Tenant.name())
                         .anyRequest().authenticated())
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(this.jwtAuthenticationEntryPoint))
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtAuthenticationFiler, UsernamePasswordAuthenticationFilter.class
@@ -78,7 +85,7 @@ public class SecurityConfiguration {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws
-            Exception{
+            Exception {
         return configuration.getAuthenticationManager();
     }
 }
