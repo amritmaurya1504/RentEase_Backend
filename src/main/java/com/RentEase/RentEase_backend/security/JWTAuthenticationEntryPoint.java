@@ -21,6 +21,7 @@ public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
+
         try (PrintWriter writer = response.getWriter()) {
             writer.println("{");
             writer.println("  \"type\": \"about:blank\",");

@@ -47,11 +47,6 @@ public class GlobalExceptionHandler {
             errorDetail.setProperty("access_denied_reason", "Authentication Failure !");
 
         }
-        
-        if (ex instanceof AccessDeniedException){
-           errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.valueOf(403), ex.getMessage());
-           errorDetail.setProperty("access_denied_reason", "Not Authorized !");
-        }
 
         if(ex instanceof SignatureException){
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.valueOf(403), ex.getMessage());
@@ -78,16 +73,6 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .build();
         return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    public ResponseEntity<ExceptionResponse> handleValidUser(UserNotAuthorizedException ex){
-        String msg = ex.getMessage();
-        ExceptionResponse apiResponse = ExceptionResponse.builder()
-                .message(msg)
-                .success(false) // Set to false for errors
-                .status(HttpStatus.UNAUTHORIZED) // Use HttpStatus value for the status code
-                .build();
-        return new ResponseEntity<>(apiResponse, HttpStatus.UNAUTHORIZED);
     }
 
 }
