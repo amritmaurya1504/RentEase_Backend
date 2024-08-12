@@ -6,6 +6,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +28,7 @@ public class JWTHelper {
        return Jwts.builder().setSubject(userDetails.getUsername())
                .setIssuedAt(new Date(System.currentTimeMillis()))
                .setExpiration(new Date(System.currentTimeMillis() +
-                       1000 * 60 * 5))
+                       1000 * 60))
                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                .compact();
     }
@@ -68,5 +70,14 @@ public class JWTHelper {
         return (userName.equals(userDetails.getUsername()) && !isTokenExpires(token));
     }
 
+    public void sendTokenInCookies(String token, String name,  HttpServletResponse response){
+        Cookie cookie = new Cookie(name, token);
+        cookie.setHttpOnly(true); // To prevent access from JavaScript
+        cookie.setSecure(false); // To ensure the cookie is sent over HTTPS only for now let's make it false
+        cookie.setPath("/");
+        cookie.setMaxAge(24 * 60 * 60);
+
+        response.addCookie(cookie);
+    }
 
 }

@@ -31,21 +31,21 @@ public class PropertyController {
     @GetMapping
     public APIResponse<List<PropertyDTO>> getAllProperties(){
         List<PropertyDTO> allProperties = propertyService.getAllProperties();
-        return new APIResponse<>("Fetched Successfully!", true, HttpStatus.OK,
+        return new APIResponse<>("All Properties Fetched Successfully!", true, HttpStatus.OK,
                 allProperties);
     }
 
     @GetMapping("/landlord/{landlordId}")
     public APIResponse<List<PropertyDTO>> getPropertiesOfLandlord(@PathVariable String landlordId){
         List<PropertyDTO> allProperties = propertyService.getAllPropertiesOfLandlord(landlordId);
-        return new APIResponse<>("Fetched Successfully!", true, HttpStatus.OK,
+        return new APIResponse<>("Landlord Properties Fetched Successfully!", true, HttpStatus.OK,
                 allProperties);
     }
 
     @GetMapping("/{propertyId}")
     public APIResponse<PropertyDTO> getSingleProperty(@PathVariable String propertyId){
         PropertyDTO property = propertyService.getPropertyById(propertyId);
-        return new APIResponse<>("Property Deleted Successfully!", true, HttpStatus.OK,
+        return new APIResponse<>("Property Fetched Successfully!", true, HttpStatus.OK,
                 property);
     }
 

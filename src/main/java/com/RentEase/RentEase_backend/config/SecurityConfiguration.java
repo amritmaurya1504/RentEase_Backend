@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -35,37 +36,44 @@ public class SecurityConfiguration {
     @Autowired
     private JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-
-    public static final String[] PUBLIC_MATCHERS = {
+    private static final String[] PUBLIC_MATCHERS = {
             "/api/v1/auth/**",
             "/swagger-ui/**",
-            "/swagger-resources/*",
-            "/v3/api-docs/**",
-            "/api/v1/properties"
+            "/swagger-resources/**",
+            "/v3/api-docs/**"
     };
-    public static final String[] LANDLORD_MATCHERS = {
+
+    private static final String[] PROPERTY_GET_MATCHERS = {
+            "/api/v1/properties/**"
+    };
+
+    private static final String[] LANDLORD_MATCHERS = {
             "/api/v1/properties/**",
             "/api/v1/users/**"
     };
-    public static final String[] TENANT_MATCHERS = {
+
+    private static final String[] TENANT_MATCHERS = {
             "/api/v1/occupation/**",
             "/api/v1/users/**"
     };
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request
+                .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(PUBLIC_MATCHERS).permitAll()
-                        .requestMatchers(LANDLORD_MATCHERS).hasAnyAuthority(Role.Landlord.name())
-                        .requestMatchers(TENANT_MATCHERS).hasAnyAuthority(Role.Tenant.name())
-                        .anyRequest().authenticated())
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(this.jwtAuthenticationEntryPoint))
-                .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider()).addFilterBefore(
-                        jwtAuthenticationFiler, UsernamePasswordAuthenticationFilter.class
-                );
+                        .requestMatchers(HttpMethod.GET, PROPERTY_GET_MATCHERS).permitAll()  // Public GET requests for properties
+                        .requestMatchers(LANDLORD_MATCHERS).hasAuthority(Role.Landlord.name())
+                        .requestMatchers(TENANT_MATCHERS).hasAuthority(Role.Tenant.name())
+                        .anyRequest().authenticated()
+                )
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling.authenticationEntryPoint(this.jwtAuthenticationEntryPoint)
+                )
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .addFilterBefore(jwtAuthenticationFiler, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -32,6 +32,7 @@ public class User implements UserDetails {
     private String state;
     private Role role;
 
+
     // Relationships
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Landlord landlord;

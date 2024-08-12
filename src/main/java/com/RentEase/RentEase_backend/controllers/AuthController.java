@@ -9,6 +9,7 @@ import com.RentEase.RentEase_backend.payloads.APIResponse;
 import com.RentEase.RentEase_backend.security.JWTHelper;
 import com.RentEase.RentEase_backend.services.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -59,18 +60,28 @@ public class AuthController {
 
     @PostMapping("/login")
     public UserAuthResponseDTO login(@Valid @RequestBody
-                                                      UserAuthRequestDTO userAuthRequestDTO){
+                                                      UserAuthRequestDTO userAuthRequestDTO,
+                                     HttpServletResponse response){
 
+        //1. Authentication
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 userAuthRequestDTO.getUserName(), userAuthRequestDTO.getPassword()
         ));
 
-
+        //2. Getting User Data
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(
                 userAuthRequestDTO.getUserName()
         );
+
+        //3. Creating Tokens
         String accessToken = this.jwtHelper.generateToken(userDetails);
         String refreshToken = this.jwtHelper.generateRefreshToken(new HashMap<>(),userDetails);
+
+        //4. Storing Tokens to Cookie
+//        jwtHelper.sendTokenInCookies(accessToken, "access_token", response);
+//        jwtHelper.sendTokenInCookies(refreshToken, "refresh_token", response);
+
+        //4. Response
         return UserAuthResponseDTO.builder()
                 .message("User Logged successfully!")
                 .success(true)
