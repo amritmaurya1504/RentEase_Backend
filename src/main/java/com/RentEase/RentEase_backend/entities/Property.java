@@ -35,7 +35,6 @@ public class Property {
 
     private String[] photos;
     private double rent;
-    private double rentPerSquareFt;
     private double deposit;
 
     private String configuration;

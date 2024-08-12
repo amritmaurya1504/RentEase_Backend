@@ -2,13 +2,13 @@ package com.RentEase.RentEase_backend.exceptions;
 
 import com.RentEase.RentEase_backend.payloads.APIResponse;
 import com.RentEase.RentEase_backend.payloads.ExceptionResponse;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.security.SignatureException;
+//import io.jsonwebtoken.ExpiredJwtException;
+//import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
+//import org.springframework.security.access.AccessDeniedException;
+//import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,30 +36,30 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(apiResponse, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ProblemDetail handleGenericException(Exception ex) {
-        ProblemDetail errorDetail = null;
-        if(ex instanceof BadCredentialsException){
-
-            // this class is provided by spring itself for error responses
-            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.valueOf(401),
-                    ex.getMessage());
-            errorDetail.setProperty("access_denied_reason", "Authentication Failure !");
-
-        }
-
-        if(ex instanceof SignatureException){
-            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.valueOf(403), ex.getMessage());
-            errorDetail.setProperty("access_denied_reason", "JWT Signature not valid !");
-        }
-
-        if(ex instanceof ExpiredJwtException){
-            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.valueOf(403), ex.getMessage());
-            errorDetail.setProperty("access_denied_reason", "JWT token already expired !");
-        }
-
-        return errorDetail;
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ProblemDetail handleGenericException(Exception ex) {
+//        ProblemDetail errorDetail = null;
+//        if(ex instanceof BadCredentialsException){
+//
+//            // this class is provided by spring itself for error responses
+//            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.valueOf(401),
+//                    ex.getMessage());
+//            errorDetail.setProperty("access_denied_reason", "Authentication Failure !");
+//
+//        }
+//
+//        if(ex instanceof SignatureException){
+//            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.valueOf(403), ex.getMessage());
+//            errorDetail.setProperty("access_denied_reason", "JWT Signature not valid !");
+//        }
+//
+//        if(ex instanceof ExpiredJwtException){
+//            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.valueOf(403), ex.getMessage());
+//            errorDetail.setProperty("access_denied_reason", "JWT token already expired !");
+//        }
+//
+//        return errorDetail;
+//    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {

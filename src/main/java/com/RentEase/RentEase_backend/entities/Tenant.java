@@ -9,15 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Tenant {
-    @Id
-    private String tenantId;
-    private String joinedDate;
-
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
+public class Tenant extends User {
     @OneToOne(mappedBy = "tenant", cascade = CascadeType.ALL, orphanRemoval = true)
     private Occupation occupation;
 }

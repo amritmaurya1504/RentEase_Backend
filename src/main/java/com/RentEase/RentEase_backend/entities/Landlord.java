@@ -12,14 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity(name = "landlord_table")
-public class Landlord {
-    @Id
-    private String landlordId;
-    private String joinedDate;
-
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+public class Landlord extends User{
 
     @OneToMany(mappedBy = "landlord", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Property> properties = new ArrayList<>();

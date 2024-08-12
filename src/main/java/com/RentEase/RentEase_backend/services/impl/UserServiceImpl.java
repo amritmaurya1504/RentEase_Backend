@@ -16,7 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private TenantRepo tenantRepo;
@@ -45,59 +45,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO createUser(UserDTO userDTO) {
 
-        //1. Check User with username or email already exist in db or not
-        if(userRepo.existsByUserName(userDTO.getUsername())){
-            throw new UserAlreadyExistsException("Username already exists with username: " +
-                    userDTO.getUsername());
-        }
-
-        if (userRepo.existsByEmail(userDTO.getEmail())) {
-            throw new UserAlreadyExistsException("Email already exists with email: " +
-                    userDTO.getEmail());
-        }
-
-        //2. Create User
-        User user = User.builder()
-                .userId(UUID.randomUUID().toString())
-                .userName(userDTO.getUsername())
-                .fullName(userDTO.getFullName())
-                .email(userDTO.getEmail())
-                .phone(Long.valueOf(userDTO.getPhone()))
-                .photoUrl(userDTO.getPhotoUrl())
-                .password(passwordEncoder.encode(userDTO.getPassword()))
-                .address(userDTO.getAddress())
-                .state(userDTO.getState())
-                .city(userDTO.getCity())
-                .pinCode(Integer.parseInt(userDTO.getPinCode())).build();
-
-        //3. Check Role of User
-        if (userDTO.getRole().equals(Role.Landlord)){
-            user.setRole(Role.Landlord);
-            Landlord landlord = Landlord.builder()
-                    .landlordId(UUID.randomUUID().toString())
-                    .user(user)
-                    .joinedDate(LocalDate.now().toString()).build();
-
-            user.setLandlord(landlord);
-
-            //4. Save User and send response
-            User newUser = userRepo.save(user);
-            return this.modelMapper.map(newUser, UserDTO.class);
-        }else if (userDTO.getRole().equals(Role.Tenant)){
-            user.setRole(Role.Tenant);
-
-            Tenant tenant = Tenant.builder()
-                    .tenantId(UUID.randomUUID().toString())
-                    .user(user)
-                    .joinedDate(LocalDate.now().toString())
-                    .build();
-
-            user.setTenant(tenant);
-
-            //4. Save User and send response
-            User newUser = userRepo.save(user);
-            return this.modelMapper.map(newUser, UserDTO.class);
-        }
 
         return null;
     }
