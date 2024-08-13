@@ -1,6 +1,7 @@
-package com.RentEase.RentEase_backend.dtos;
+package com.RentEase.RentEase_backend.dtos.requestdtos;
 
-import com.RentEase.RentEase_backend.entities.Tenant;
+import com.RentEase.RentEase_backend.dtos.responsedtos.UserResponseDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -9,8 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OccupationDTO {
-    private String occupationId;
+public class OccupationReqDTO {
     @NotBlank(message = "Institution name cannot be blank")
     private String institutionName;
 
@@ -19,5 +19,5 @@ public class OccupationDTO {
 
     @NotBlank(message = "Occupation cannot be blank")
     private String occupation;
-    private TenantDTO tenant;
+
 }

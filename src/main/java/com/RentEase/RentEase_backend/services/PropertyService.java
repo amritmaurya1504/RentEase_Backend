@@ -1,6 +1,6 @@
 package com.RentEase.RentEase_backend.services;
-import com.RentEase.RentEase_backend.dtos.PropertyDTO;
-import com.RentEase.RentEase_backend.dtos.PropertyUpdateDTO;
+import com.RentEase.RentEase_backend.dtos.commondtos.PropertyDTO;
+import com.RentEase.RentEase_backend.dtos.commondtos.PropertyUpdateDTO;
 
 import java.util.List;
 

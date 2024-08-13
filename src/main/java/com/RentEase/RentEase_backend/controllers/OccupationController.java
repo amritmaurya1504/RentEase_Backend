@@ -1,6 +1,7 @@
 package com.RentEase.RentEase_backend.controllers;
 
-import com.RentEase.RentEase_backend.dtos.OccupationDTO;
+import com.RentEase.RentEase_backend.dtos.requestdtos.OccupationReqDTO;
+import com.RentEase.RentEase_backend.dtos.responsedtos.OccupationResDTO;
 import com.RentEase.RentEase_backend.payloads.APIResponse;
 import com.RentEase.RentEase_backend.services.OccupationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,32 +19,33 @@ public class OccupationController {
     private OccupationService occupationService;
 
     @PostMapping("/{tenantId}")
-    public APIResponse<OccupationDTO> addOccupation(@PathVariable String tenantId, @Valid
-                                                    @RequestBody OccupationDTO occupationDTO){
-        OccupationDTO occupationDTO1 = occupationService.addOccupation(occupationDTO, tenantId);
+    public APIResponse<OccupationResDTO> addOccupation(@PathVariable String tenantId, @Valid
+                                                    @RequestBody OccupationReqDTO occupationReqDTO){
+        OccupationResDTO occupationReqDTO1 = occupationService.addOccupation(occupationReqDTO, tenantId);
         return new APIResponse<>("Occupation added Successfully!",
-                true, HttpStatus.CREATED, occupationDTO1);
+                true, HttpStatus.CREATED, occupationReqDTO1);
     }
 
     @GetMapping("/{occupationId}")
-    public APIResponse<OccupationDTO> getOccupationByOccupationId(@PathVariable String occupationId){
-        OccupationDTO occupation = occupationService.getOccupationByOccupationId(occupationId);
+    public APIResponse<OccupationResDTO> getOccupationByOccupationId(@PathVariable String occupationId){
+        OccupationResDTO occupation = occupationService.getOccupationByOccupationId(occupationId);
         return new APIResponse<>("Fetched Successfully!",
                 true, HttpStatus.OK, occupation);
     }
 
     @PutMapping("/{occupationId}")
-    public APIResponse<OccupationDTO> updateOccupation(@PathVariable String occupationId, @RequestBody
-                                                       OccupationDTO occupationDTO){
-        OccupationDTO occupation = occupationService.updateOccupation(occupationDTO, occupationId);
+    public APIResponse<OccupationResDTO> updateOccupation(@PathVariable String occupationId, @RequestBody
+    OccupationReqDTO occupationReqDTO){
+        OccupationResDTO occupation = occupationService.updateOccupation(occupationReqDTO, occupationId);
         return new APIResponse<>("Occupation Updated Successfully!",
                 true, HttpStatus.CREATED, occupation);
     }
 
     @GetMapping("/tenant/{tenantId}")
-    private APIResponse<OccupationDTO> getOccupationByTenantId(@PathVariable String tenantId){
-        return new APIResponse<>("Fetched Successfully!",
-                true, HttpStatus.OK, occupationService.getOccupationByTenantId(tenantId));
+    private APIResponse<OccupationResDTO> getOccupationByTenantId(@PathVariable String tenantId){
+        OccupationResDTO occupationResDTO = occupationService.getOccupationByTenantId(tenantId);
+        return new APIResponse<>(occupationResDTO == null ? "Occupation doesn't exist !" : "Fetched Successfully !",
+                true, HttpStatus.OK, occupationResDTO);
     }
 
 }

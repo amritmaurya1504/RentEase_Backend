@@ -1,5 +1,6 @@
-package com.RentEase.RentEase_backend.dtos;
+package com.RentEase.RentEase_backend.dtos.responsedtos;
 
+import com.RentEase.RentEase_backend.dtos.responsedtos.UserResponseDTO;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 
@@ -8,11 +9,11 @@ import org.springframework.http.HttpStatus;
 @Setter
 @NoArgsConstructor
 @Builder
-public class UserAuthResponseDTO {
+public class AuthResponseDTO {
     private String message;
     private boolean success;
     private HttpStatus status;
-    private UserDTO user;
+    private UserResponseDTO user;
     private String accessToken;
     private String refreshToken;
 }

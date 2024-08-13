@@ -1,15 +1,13 @@
 package com.RentEase.RentEase_backend.services;
 
-import com.RentEase.RentEase_backend.dtos.OccupationDTO;
-import com.RentEase.RentEase_backend.entities.Occupation;
-
-import java.util.List;
+import com.RentEase.RentEase_backend.dtos.requestdtos.OccupationReqDTO;
+import com.RentEase.RentEase_backend.dtos.responsedtos.OccupationResDTO;
 
 public interface OccupationService {
 
-    OccupationDTO addOccupation(OccupationDTO occupationDTO, String tenantId);
-    OccupationDTO getOccupationByOccupationId(String occupationId);
-    OccupationDTO updateOccupation(OccupationDTO occupationDTO, String occupationId);
-    OccupationDTO getOccupationByTenantId(String tenantId);
+    OccupationResDTO addOccupation(OccupationReqDTO occupationReqDTO, String tenantId);
+    OccupationResDTO getOccupationByOccupationId(String occupationId);
+    OccupationResDTO updateOccupation(OccupationReqDTO occupationReqDTO, String occupationId);
+    OccupationResDTO getOccupationByTenantId(String tenantId);
 
 }

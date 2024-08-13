@@ -1,18 +1,21 @@
-package com.RentEase.RentEase_backend.dtos;
+package com.RentEase.RentEase_backend.dtos.requestdtos;
 
-import com.RentEase.RentEase_backend.entities.Landlord;
 import com.RentEase.RentEase_backend.enums.Role;
-import jakarta.validation.constraints.*;
-import lombok.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class UserDTO {
-    private String userId;
-
+public class UserRegisterReqDTO {
     @NotBlank(message = "Full name cannot be empty")
     @Size(min = 1, max = 100, message = "Full name must be between 1 and 100 characters")
     private String fullName;
@@ -29,28 +32,6 @@ public class UserDTO {
     @Email(message = "Email should be valid")
     private String email;
 
-    private String photoUrl;
-
-    @Pattern(regexp = "\\d{10}", message = "Phone number must be 10 digits")
-    private String phone;
-
-    @NotBlank(message = "Address cannot be empty")
-    private String address;
-
-    @NotBlank(message = "City cannot be empty")
-    private String city;
-
-    @NotNull(message = "Pin code cannot be null")
-    @Pattern(regexp = "\\d{6}", message = "Pin code must be 6 digits")
-    private String pinCode;
-
-    @NotBlank(message = "State cannot be empty")
-    private String state;
-
     @NotNull(message = "Role cannot be null")
     private Role role;
-
-    private LandlordDTO landlord;
-    private TenantDTO tenant;
-
 }

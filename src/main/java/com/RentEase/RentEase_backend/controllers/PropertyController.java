@@ -1,7 +1,7 @@
 package com.RentEase.RentEase_backend.controllers;
 
-import com.RentEase.RentEase_backend.dtos.PropertyDTO;
-import com.RentEase.RentEase_backend.dtos.PropertyUpdateDTO;
+import com.RentEase.RentEase_backend.dtos.commondtos.PropertyDTO;
+import com.RentEase.RentEase_backend.dtos.commondtos.PropertyUpdateDTO;
 import com.RentEase.RentEase_backend.payloads.APIResponse;
 import com.RentEase.RentEase_backend.services.PropertyService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,21 +31,23 @@ public class PropertyController {
     @GetMapping
     public APIResponse<List<PropertyDTO>> getAllProperties(){
         List<PropertyDTO> allProperties = propertyService.getAllProperties();
-        return new APIResponse<>("Fetched Successfully!", true, HttpStatus.OK,
+        return new APIResponse<>(allProperties.isEmpty() ? "No any properties listed yet !" : "All Properties listed fetched" +
+                " Successfully!", true, HttpStatus.OK,
                 allProperties);
     }
 
     @GetMapping("/landlord/{landlordId}")
     public APIResponse<List<PropertyDTO>> getPropertiesOfLandlord(@PathVariable String landlordId){
         List<PropertyDTO> allProperties = propertyService.getAllPropertiesOfLandlord(landlordId);
-        return new APIResponse<>("Fetched Successfully!", true, HttpStatus.OK,
+        return new APIResponse<>(allProperties.isEmpty() ? "No any properties listed yet !" : "Landlord properties fetched" +
+                " Successfully!", true, HttpStatus.OK,
                 allProperties);
     }
 
     @GetMapping("/{propertyId}")
     public APIResponse<PropertyDTO> getSingleProperty(@PathVariable String propertyId){
         PropertyDTO property = propertyService.getPropertyById(propertyId);
-        return new APIResponse<>("Property Deleted Successfully!", true, HttpStatus.OK,
+        return new APIResponse<>("Property Fetched Successfully!", true, HttpStatus.OK,
                 property);
     }
 

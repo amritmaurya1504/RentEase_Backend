@@ -1,18 +1,18 @@
-package com.RentEase.RentEase_backend.dtos;
+package com.RentEase.RentEase_backend.dtos.commondtos;
 
 import com.RentEase.RentEase_backend.enums.AvailabilityStatus;
 import com.RentEase.RentEase_backend.enums.PropertyType;
 import com.RentEase.RentEase_backend.enums.TenantType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class PropertyDTO {
-
     private String propertyId;
 
     @NotBlank(message = "Address cannot be blank")
@@ -26,7 +26,7 @@ public class PropertyDTO {
 
     @NotBlank(message = "Pin code cannot be blank")
     @Pattern(regexp = "\\d{6}", message = "Pin code must be 6 digits")
-    private String pinCode;
+    private int pinCode;
 
     @NotNull(message = "Tenant type cannot be null")
     private TenantType tenantType;
@@ -58,9 +58,6 @@ public class PropertyDTO {
     @Positive(message = "Rent must be positive")
     private double rent;
 
-    @Positive(message = "Rent per square foot must be positive")
-    private double rentPerSquareFt;
-
     @Positive(message = "Deposit must be positive")
     private double deposit;
 
@@ -74,7 +71,5 @@ public class PropertyDTO {
     private String[] furnishedAmenities;
 
     private String[] otherAmenities;
-
-    private LandlordDTO landlord;
 
 }
