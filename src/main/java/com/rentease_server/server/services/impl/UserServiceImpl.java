@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -35,6 +36,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public UserResponseDTO createUser(UserRegisterReqDTO userRegisterReqDTO) {
         //1. first check role
@@ -53,7 +57,7 @@ public class UserServiceImpl implements UserService {
             tenant.setUserId(UUID.randomUUID().toString());
             tenant.setFullName(userRegisterReqDTO.getFullName());
             tenant.setUserName(userRegisterReqDTO.getUsername());
-            tenant.setPassword(userRegisterReqDTO.getPassword());
+            tenant.setPassword(passwordEncoder.encode(userRegisterReqDTO.getPassword()));
             tenant.setRole(Role.Tenant);
             tenant.setEmail(userRegisterReqDTO.getEmail());
             tenant.setJoinedDate(LocalDate.now().toString());
@@ -81,7 +85,7 @@ public class UserServiceImpl implements UserService {
             landlord.setUserId(UUID.randomUUID().toString());
             landlord.setFullName(userRegisterReqDTO.getFullName());
             landlord.setUserName(userRegisterReqDTO.getUsername());
-            landlord.setPassword(userRegisterReqDTO.getPassword());
+            landlord.setPassword(passwordEncoder.encode(userRegisterReqDTO.getPassword()));
             landlord.setRole(Role.Landlord);
             landlord.setEmail(userRegisterReqDTO.getEmail());
             landlord.setJoinedDate(LocalDate.now().toString());
