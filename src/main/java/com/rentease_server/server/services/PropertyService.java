@@ -1,6 +1,7 @@
 package com.rentease_server.server.services;
 import com.rentease_server.server.dtos.commondtos.PropertyDTO;
 import com.rentease_server.server.dtos.commondtos.PropertyUpdateDTO;
+import com.rentease_server.server.dtos.requestdtos.PropertyFilterDTO;
 
 import java.util.List;
 
@@ -12,5 +13,6 @@ public interface PropertyService {
     PropertyDTO getPropertyById(String propertyId);
     void deleteProperty(String propertyId);
     PropertyDTO updateProperty(String propertyId, PropertyUpdateDTO propertyUpdateDTO);
+    List<PropertyDTO> getAllPropertiesWithFilters(PropertyFilterDTO propertyFilterDTO);
 
 }

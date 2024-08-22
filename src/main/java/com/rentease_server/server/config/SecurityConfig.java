@@ -46,7 +46,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(PUBLIC_MATCHERS).permitAll()
-                        .requestMatchers("/api/v1/real-state/properties/**").permitAll()
+                        .requestMatchers("/api/v1/real-estate/properties/**").permitAll()
                         .requestMatchers("/api/v1/users/**")
                         .hasAnyAuthority(Role.Landlord.name(), Role.Tenant.name())
                         .anyRequest().authenticated()

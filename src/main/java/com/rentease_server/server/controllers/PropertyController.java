@@ -2,6 +2,7 @@ package com.rentease_server.server.controllers;
 
 import com.rentease_server.server.dtos.commondtos.PropertyDTO;
 import com.rentease_server.server.dtos.commondtos.PropertyUpdateDTO;
+import com.rentease_server.server.dtos.requestdtos.PropertyFilterDTO;
 import com.rentease_server.server.payloads.APIResponse;
 import com.rentease_server.server.services.PropertyService;
 import jakarta.validation.Valid;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/real-state/properties")
+@RequestMapping("/api/v1/real-estate/properties")
 public class PropertyController {
 
     private static final Logger logger = LoggerFactory.getLogger(PropertyController.class);
@@ -37,14 +38,14 @@ public class PropertyController {
     @GetMapping
     public APIResponse<List<PropertyDTO>> getAllProperties(){
         List<PropertyDTO> allProperties = propertyService.getAllProperties();
-        return new APIResponse<>(allProperties.isEmpty() ? "No properties listed yet!" : "All properties listed fetched successfully!",
+        return new APIResponse<>(allProperties.isEmpty() ? "No properties listed yet!" : allProperties.size() + " properties listed fetched successfully!",
                 true, HttpStatus.OK, allProperties);
     }
 
     @GetMapping("/landlord/{landlordId}")
     public APIResponse<List<PropertyDTO>> getPropertiesOfLandlord(@PathVariable String landlordId){
         List<PropertyDTO> allProperties = propertyService.getAllPropertiesOfLandlord(landlordId);
-        return new APIResponse<>(allProperties.isEmpty() ? "No properties listed yet!" : "Landlord properties fetched successfully!",
+        return new APIResponse<>(allProperties.isEmpty() ? "No properties listed yet!" : + allProperties.size() + " Landlord properties fetched successfully!",
                 true, HttpStatus.OK, allProperties);
     }
 
@@ -66,5 +67,35 @@ public class PropertyController {
         PropertyDTO property = propertyService.updateProperty(propertyId, propertyUpdateDTO);
         return new APIResponse<>("Property Updated Successfully!", true, HttpStatus.OK, property);
     }
+
+    @GetMapping("/filter")
+    public APIResponse<List<PropertyDTO>> getPropertiesBasedOnFilters(
+            @RequestParam(required = false) Double minBudget,
+            @RequestParam(required = false) Double maxBudget,
+            @RequestParam(required = false) List<String> propertyTypes,
+            @RequestParam(required = false) List<String> size,
+            @RequestParam(required = false) List<String> furnishedStatuses,
+            @RequestParam(required = false) String availabilityStatus,
+            @RequestParam(required = false) List<String> amenities,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String state
+    ){
+        PropertyFilterDTO filterDTO = PropertyFilterDTO.builder()
+                .minBudget(minBudget)
+                .maxBudget(maxBudget)
+                .propertyTypes(propertyTypes)
+                .size(size)
+                .furnishedStatuses(furnishedStatuses)
+                .availabilityStatus(availabilityStatus)
+                .amenities(amenities)
+                .city(city)
+                .state(state)
+                .build();
+
+        List<PropertyDTO> data = this.propertyService.getAllPropertiesWithFilters(filterDTO);
+        return new APIResponse<>(data.isEmpty() ? "No Property listed with given filters !" : + data.size() + " Data Fetched successfully!" , true,
+                HttpStatus.OK, data);
+    }
+
 
 }

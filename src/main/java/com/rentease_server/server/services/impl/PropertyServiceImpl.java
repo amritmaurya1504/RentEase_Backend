@@ -2,6 +2,7 @@ package com.rentease_server.server.services.impl;
 
 import com.rentease_server.server.dtos.commondtos.PropertyDTO;
 import com.rentease_server.server.dtos.commondtos.PropertyUpdateDTO;
+import com.rentease_server.server.dtos.requestdtos.PropertyFilterDTO;
 import com.rentease_server.server.entities.Landlord;
 import com.rentease_server.server.entities.Property;
 import com.rentease_server.server.exceptions.ResourceNotFoundException;
@@ -9,16 +10,23 @@ import com.rentease_server.server.repositories.LandlordRepo;
 import com.rentease_server.server.repositories.PropertyRepo;
 import com.rentease_server.server.services.PropertyService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class PropertyServiceImpl implements PropertyService {
+
+    private static final Logger logger = LoggerFactory.getLogger(PropertyServiceImpl.class);
 
     @Autowired
     private PropertyRepo propertyRepo;
@@ -112,5 +120,32 @@ public class PropertyServiceImpl implements PropertyService {
         // Save the updated property entity
         Property updatedProperty = propertyRepo.save(property);
         return this.modelMapper.map(updatedProperty, PropertyDTO.class);
+    }
+
+    @Override
+    public List<PropertyDTO> getAllPropertiesWithFilters(PropertyFilterDTO filterDTO) {
+        // Logic to apply filters
+        List<Property> filteredProperties = propertyRepo.findAll().stream()
+                .filter(property -> filterDTO.getMinBudget() == null || property.getRent() >= filterDTO.getMinBudget())
+                .filter(property -> filterDTO.getMaxBudget() == null || property.getRent() <= filterDTO.getMaxBudget())
+                .filter(property -> filterDTO.getPropertyTypes() == null || filterDTO.getPropertyTypes().contains(property.getPropertyType()))
+                .filter(property -> filterDTO.getSize() == null || filterDTO.getSize().contains(property.getSize()))
+                .filter(property -> filterDTO.getFurnishedStatuses() == null || filterDTO.getFurnishedStatuses().contains(property.getFurnishedStatus()))
+                .filter(property -> filterDTO.getAvailabilityStatus() == null || property.getAvailabilityStatus().equals(filterDTO.getAvailabilityStatus()))
+                .filter(property -> {
+                    if (filterDTO.getAmenities() == null) {
+                        return true;
+                    }
+                    List<String> propertyAmenities = Arrays.asList(property.getOtherAmenities());
+                    logger.info(propertyAmenities.toString());
+                    return new HashSet<>(propertyAmenities).containsAll(filterDTO.getAmenities());
+                })
+                .filter(property -> filterDTO.getCity() == null || property.getCity().equalsIgnoreCase(filterDTO.getCity()))
+                .filter(property -> filterDTO.getState() == null || property.getState().equalsIgnoreCase(filterDTO.getState()))
+                .toList();
+
+        return filteredProperties.stream().map(item ->
+                this.modelMapper.map(item, PropertyDTO.class)).toList();
+
     }
 }
