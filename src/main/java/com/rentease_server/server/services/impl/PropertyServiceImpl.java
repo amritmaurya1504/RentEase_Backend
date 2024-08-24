@@ -1,8 +1,9 @@
 package com.rentease_server.server.services.impl;
 
-import com.rentease_server.server.dtos.commondtos.PropertyDTO;
+import com.rentease_server.server.dtos.requestdtos.PropertyReqDTO;
 import com.rentease_server.server.dtos.commondtos.PropertyUpdateDTO;
 import com.rentease_server.server.dtos.requestdtos.PropertyFilterDTO;
+import com.rentease_server.server.dtos.responsedtos.PropertyResDTO;
 import com.rentease_server.server.entities.Landlord;
 import com.rentease_server.server.entities.Property;
 import com.rentease_server.server.exceptions.ResourceNotFoundException;
@@ -38,7 +39,7 @@ public class PropertyServiceImpl implements PropertyService {
     private ModelMapper modelMapper;
 
     @Override
-    public PropertyDTO createProperty(PropertyDTO propertyDTO, String landlordId) {
+    public PropertyResDTO createProperty(PropertyReqDTO propertyDTO, String landlordId) {
         //1. Check landlord exist or not
         Landlord landlord = landlordRepo.findById(landlordId).orElseThrow(
                 () -> new ResourceNotFoundException
@@ -55,20 +56,20 @@ public class PropertyServiceImpl implements PropertyService {
         //4. Save Property Entity
         Property savedProperty = propertyRepo.save(property);
 
-        return this.modelMapper.map(savedProperty, PropertyDTO.class);
+        return this.modelMapper.map(savedProperty, PropertyResDTO.class);
 
     }
 
     @Override
-    public List<PropertyDTO> getAllProperties() {
+    public List<PropertyResDTO> getAllProperties() {
         List<Property> allProperties = propertyRepo.findAll();
         return allProperties.stream().map(
-                (property) -> this.modelMapper.map(property, PropertyDTO.class)
+                (property) -> this.modelMapper.map(property, PropertyResDTO.class)
         ).toList();
     }
 
     @Override
-    public List<PropertyDTO> getAllPropertiesOfLandlord(String landlordId) {
+    public List<PropertyResDTO> getAllPropertiesOfLandlord(String landlordId) {
         Landlord landlord = landlordRepo.findById(landlordId).orElseThrow(
                 () -> new ResourceNotFoundException
                         ("Landlord doesn't exist with id: " + landlordId)
@@ -76,15 +77,15 @@ public class PropertyServiceImpl implements PropertyService {
 
         List<Property> allProperties = propertyRepo.findByLandlordUserId(landlordId);
         return allProperties.stream().map((property) ->
-                this.modelMapper.map(property, PropertyDTO.class)).toList();
+                this.modelMapper.map(property, PropertyResDTO.class)).toList();
     }
 
     @Override
-    public PropertyDTO getPropertyById(String propertyId) {
+    public PropertyResDTO getPropertyById(String propertyId) {
         Property property = propertyRepo.findById(propertyId).orElseThrow(
                 () -> new ResourceNotFoundException("Property doesn't exist with id: " + propertyId)
         );
-        return this.modelMapper.map(property, PropertyDTO.class);
+        return this.modelMapper.map(property, PropertyResDTO.class);
     }
 
     @Override
@@ -97,7 +98,7 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public PropertyDTO updateProperty(String propertyId, PropertyUpdateDTO propertyUpdateDTO) {
+    public PropertyResDTO updateProperty(String propertyId, PropertyUpdateDTO propertyUpdateDTO) {
 
         Property property = propertyRepo.findById(propertyId).orElseThrow(
                 () -> new ResourceNotFoundException("Property doesn't exist with id: " + propertyId)
@@ -119,11 +120,11 @@ public class PropertyServiceImpl implements PropertyService {
 
         // Save the updated property entity
         Property updatedProperty = propertyRepo.save(property);
-        return this.modelMapper.map(updatedProperty, PropertyDTO.class);
+        return this.modelMapper.map(updatedProperty, PropertyResDTO.class);
     }
 
     @Override
-    public List<PropertyDTO> getAllPropertiesWithFilters(PropertyFilterDTO filterDTO) {
+    public List<PropertyResDTO> getAllPropertiesWithFilters(PropertyFilterDTO filterDTO) {
         // Logic to apply filters
         List<Property> filteredProperties = propertyRepo.findAll().stream()
                 .filter(property -> filterDTO.getMinBudget() == null || property.getRent() >= filterDTO.getMinBudget())
@@ -145,7 +146,7 @@ public class PropertyServiceImpl implements PropertyService {
                 .toList();
 
         return filteredProperties.stream().map(item ->
-                this.modelMapper.map(item, PropertyDTO.class)).toList();
+                this.modelMapper.map(item, PropertyResDTO.class)).toList();
 
     }
 }

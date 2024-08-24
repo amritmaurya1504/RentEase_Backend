@@ -1,4 +1,4 @@
-package com.rentease_server.server.dtos.commondtos;
+package com.rentease_server.server.dtos.requestdtos;
 
 
 import com.rentease_server.server.enums.Role;
@@ -10,8 +10,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class PropertyDTO {
-    private String propertyId;
+public class PropertyReqDTO {
 
     @NotBlank(message = "Address cannot be blank")
     private String address;
@@ -28,8 +27,6 @@ public class PropertyDTO {
 
     @NotNull(message = "Tenant type cannot be null")
     private String tenantType;
-
-    private String dateListed;
 
     @Size(max = 500, message = "Description cannot exceed 500 characters")
     private String description;

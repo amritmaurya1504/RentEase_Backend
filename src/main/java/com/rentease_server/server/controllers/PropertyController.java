@@ -1,8 +1,9 @@
 package com.rentease_server.server.controllers;
 
-import com.rentease_server.server.dtos.commondtos.PropertyDTO;
+import com.rentease_server.server.dtos.requestdtos.PropertyReqDTO;
 import com.rentease_server.server.dtos.commondtos.PropertyUpdateDTO;
 import com.rentease_server.server.dtos.requestdtos.PropertyFilterDTO;
+import com.rentease_server.server.dtos.responsedtos.PropertyResDTO;
 import com.rentease_server.server.payloads.APIResponse;
 import com.rentease_server.server.services.PropertyService;
 import jakarta.validation.Valid;
@@ -24,10 +25,10 @@ public class PropertyController {
     private PropertyService propertyService;
 
     @PostMapping("/{landlordId}")
-    public APIResponse<PropertyDTO> addProperty(@PathVariable String landlordId, @Valid @RequestBody PropertyDTO propertyDTO){
+    public APIResponse<PropertyResDTO> addProperty(@PathVariable String landlordId, @Valid @RequestBody PropertyReqDTO propertyDTO){
 
         logger.info("Received request to create property with landlordId: {}", landlordId);
-        PropertyDTO newProperty = propertyService.createProperty(propertyDTO, landlordId);
+        PropertyResDTO newProperty = propertyService.createProperty(propertyDTO, landlordId);
         if (newProperty == null) {
             return new APIResponse<>("Property creation failed!", false, HttpStatus.BAD_REQUEST, null);
         }
@@ -36,22 +37,22 @@ public class PropertyController {
     }
 
     @GetMapping
-    public APIResponse<List<PropertyDTO>> getAllProperties(){
-        List<PropertyDTO> allProperties = propertyService.getAllProperties();
+    public APIResponse<List<PropertyResDTO>> getAllProperties(){
+        List<PropertyResDTO> allProperties = propertyService.getAllProperties();
         return new APIResponse<>(allProperties.isEmpty() ? "No properties listed yet!" : allProperties.size() + " properties listed fetched successfully!",
                 true, HttpStatus.OK, allProperties);
     }
 
     @GetMapping("/landlord/{landlordId}")
-    public APIResponse<List<PropertyDTO>> getPropertiesOfLandlord(@PathVariable String landlordId){
-        List<PropertyDTO> allProperties = propertyService.getAllPropertiesOfLandlord(landlordId);
+    public APIResponse<List<PropertyResDTO>> getPropertiesOfLandlord(@PathVariable String landlordId){
+        List<PropertyResDTO> allProperties = propertyService.getAllPropertiesOfLandlord(landlordId);
         return new APIResponse<>(allProperties.isEmpty() ? "No properties listed yet!" : + allProperties.size() + " Landlord properties fetched successfully!",
                 true, HttpStatus.OK, allProperties);
     }
 
     @GetMapping("/{propertyId}")
-    public APIResponse<PropertyDTO> getSingleProperty(@PathVariable String propertyId){
-        PropertyDTO property = propertyService.getPropertyById(propertyId);
+    public APIResponse<PropertyResDTO> getSingleProperty(@PathVariable String propertyId){
+        PropertyResDTO property = propertyService.getPropertyById(propertyId);
         return new APIResponse<>("Property Fetched Successfully!", true, HttpStatus.OK, property);
     }
 
@@ -62,14 +63,14 @@ public class PropertyController {
     }
 
     @PutMapping("/{propertyId}")
-    public APIResponse<PropertyDTO> updateProperty(@PathVariable String propertyId,
+    public APIResponse<PropertyResDTO> updateProperty(@PathVariable String propertyId,
                                                    @Valid @RequestBody PropertyUpdateDTO propertyUpdateDTO){
-        PropertyDTO property = propertyService.updateProperty(propertyId, propertyUpdateDTO);
+        PropertyResDTO property = propertyService.updateProperty(propertyId, propertyUpdateDTO);
         return new APIResponse<>("Property Updated Successfully!", true, HttpStatus.OK, property);
     }
 
     @GetMapping("/filter")
-    public APIResponse<List<PropertyDTO>> getPropertiesBasedOnFilters(
+    public APIResponse<List<PropertyResDTO>> getPropertiesBasedOnFilters(
             @RequestParam(required = false) Double minBudget,
             @RequestParam(required = false) Double maxBudget,
             @RequestParam(required = false) List<String> propertyTypes,
@@ -92,7 +93,7 @@ public class PropertyController {
                 .state(state)
                 .build();
 
-        List<PropertyDTO> data = this.propertyService.getAllPropertiesWithFilters(filterDTO);
+        List<PropertyResDTO> data = this.propertyService.getAllPropertiesWithFilters(filterDTO);
         return new APIResponse<>(data.isEmpty() ? "No Property listed with given filters !" : + data.size() + " Data Fetched successfully!" , true,
                 HttpStatus.OK, data);
     }
