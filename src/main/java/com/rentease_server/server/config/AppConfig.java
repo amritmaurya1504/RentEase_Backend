@@ -13,18 +13,4 @@ public class AppConfig {
     public ModelMapper modelMapper(){
         return new ModelMapper();
     }
-
-    @Bean
-    public WebMvcConfigurer webMvcConfigurer(){
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // Allow all endpoints
-                        .allowedOrigins("http://localhost:5173", "https://rent-ease-client-two.vercel.app") // Allow both frontends
-                        .allowedMethods("GET", "POST", "PUT", "DELETE") // Allow specific HTTP methods
-                        .allowedHeaders("*"); // Allow all headers
-            }
-        };
-    }
-
 }
