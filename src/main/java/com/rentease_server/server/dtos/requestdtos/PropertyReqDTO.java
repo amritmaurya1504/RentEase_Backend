@@ -12,6 +12,9 @@ import lombok.*;
 @Builder
 public class PropertyReqDTO {
 
+    @NotBlank(message = "Name cannot be blank")
+    private String name;
+
     @NotBlank(message = "Address cannot be blank")
     private String address;
 

@@ -15,6 +15,7 @@ public class Property {
 
     @Id
     private String propertyId;
+    private String name;
     private String address;
     private String city;
     private String state;
