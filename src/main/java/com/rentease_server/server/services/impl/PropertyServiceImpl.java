@@ -18,10 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -145,7 +142,29 @@ public class PropertyServiceImpl implements PropertyService {
                 .filter(property -> filterDTO.getState() == null || property.getState().equalsIgnoreCase(filterDTO.getState()))
                 .toList();
 
-        return filteredProperties.stream().map(item ->
+
+        // Convert to mutable list if needed
+        List<Property> mutableFilteredProperties = new ArrayList<>(filteredProperties);
+
+        // Apply sorting based on the 'sortBy' criteria
+        if (filterDTO.getSortBy() != null) {
+            switch (filterDTO.getSortBy().toLowerCase()) {
+                case "newest-first":
+                    mutableFilteredProperties.sort(Comparator.comparing(Property::getDateListed).reversed());
+                    break;
+                case "price-high-to-low":
+                    mutableFilteredProperties.sort(Comparator.comparing(Property::getRent).reversed());
+                    break;
+                case "price-low-to-high":
+                    mutableFilteredProperties.sort(Comparator.comparing(Property::getRent));
+                    break;
+                default:
+                    // No sorting if criteria is not matched
+                    break;
+            }
+        }
+
+        return mutableFilteredProperties.stream().map(item ->
                 this.modelMapper.map(item, PropertyResDTO.class)).toList();
 
     }
