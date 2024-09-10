@@ -1,19 +1,19 @@
 package com.rentease_server.server.exceptions;
 
 import com.rentease_server.server.payloads.ExceptionResponse;
-//import io.jsonwebtoken.ExpiredJwtException;
-//import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.sql.SQLDataException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -81,6 +81,28 @@ public class GlobalExceptionHandler {
 
         ExceptionResponse apiResponse = ExceptionResponse.builder()
                 .message(defaultMessage)
+                .success(false)
+                .status(HttpStatus.BAD_REQUEST)
+                .build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ExceptionResponse> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        String message = "Data too long for field: " + ex.getMostSpecificCause().getMessage();
+        ExceptionResponse apiResponse = ExceptionResponse.builder()
+                .message(message)
+                .success(false)
+                .status(HttpStatus.BAD_REQUEST)
+                .build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(SQLDataException.class)
+    public ResponseEntity<ExceptionResponse> handleSQLDataException(SQLDataException ex) {
+        String message = "SQL Data error: " + ex.getMessage();
+        ExceptionResponse apiResponse = ExceptionResponse.builder()
+                .message(message)
                 .success(false)
                 .status(HttpStatus.BAD_REQUEST)
                 .build();

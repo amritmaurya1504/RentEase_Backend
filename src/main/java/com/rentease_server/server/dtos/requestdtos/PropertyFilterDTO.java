@@ -20,4 +20,5 @@ public class PropertyFilterDTO {
     private String city;
     private String state;
     private String sortBy;
+    private List<String> tenantTypes;
 }

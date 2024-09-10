@@ -130,6 +130,7 @@ public class PropertyServiceImpl implements PropertyService {
                 .filter(property -> filterDTO.getSize() == null || filterDTO.getSize().contains(property.getSize()))
                 .filter(property -> filterDTO.getFurnishedStatuses() == null || filterDTO.getFurnishedStatuses().contains(property.getFurnishedStatus()))
                 .filter(property -> filterDTO.getAvailabilityStatus() == null || property.getAvailabilityStatus().equals(filterDTO.getAvailabilityStatus()))
+                .filter(property -> filterDTO.getTenantTypes() == null || filterDTO.getTenantTypes().contains(property.getTenantType()))
                 .filter(property -> {
                     if (filterDTO.getAmenities() == null) {
                         return true;

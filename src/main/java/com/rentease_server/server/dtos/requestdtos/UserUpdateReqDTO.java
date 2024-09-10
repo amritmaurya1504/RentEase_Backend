@@ -17,7 +17,7 @@ public class UserUpdateReqDTO {
     @Min(value = 1000000000, message = "Phone number must be exactly 10 digits")
     @Max(value = 9999999999L, message = "Phone number must be exactly 10 digits")
     private Long phone;
-
+    private String dob;
     private String address;
     private String city;
 

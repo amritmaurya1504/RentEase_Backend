@@ -136,6 +136,9 @@ public class UserServiceImpl implements UserService {
             if (userUpdateReqDTO.getState() != null) {
                 tenant.setState(userUpdateReqDTO.getState());
             }
+            if(userUpdateReqDTO.getDob() != null){
+                tenant.setDob(userUpdateReqDTO.getDob());
+            }
 
             // Check if all required fields are non-null and then activate the user
             if (tenant.getPhone() != null && tenant.getAddress() != null &&
@@ -178,6 +181,9 @@ public class UserServiceImpl implements UserService {
         }
         if (userUpdateReqDTO.getState() != null) {
             landlord.setState(userUpdateReqDTO.getState());
+        }
+        if(userUpdateReqDTO.getDob() != null){
+            landlord.setDob(userUpdateReqDTO.getDob());
         }
 
         // Check if all required fields are non-null and then activate the user

@@ -80,7 +80,8 @@ public class PropertyController {
             @RequestParam(required = false) List<String> amenities,
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String state,
-            @RequestParam(required = false) String sortBy
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) List<String> tenantTypes
     ){
         PropertyFilterDTO filterDTO = PropertyFilterDTO.builder()
                 .minBudget(minBudget)
@@ -93,6 +94,7 @@ public class PropertyController {
                 .city(city)
                 .state(state)
                 .sortBy(sortBy)
+                .tenantTypes(tenantTypes)
                 .build();
 
         List<PropertyResDTO> data = this.propertyService.getAllPropertiesWithFilters(filterDTO);
