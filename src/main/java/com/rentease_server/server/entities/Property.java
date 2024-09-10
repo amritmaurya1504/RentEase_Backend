@@ -3,8 +3,6 @@ package com.rentease_server.server.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
-
 @Entity(name = "property_table")
 @Getter
 @Setter

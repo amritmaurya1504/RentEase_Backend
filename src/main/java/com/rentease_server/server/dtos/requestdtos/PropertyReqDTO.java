@@ -1,7 +1,6 @@
 package com.rentease_server.server.dtos.requestdtos;
 
 
-import com.rentease_server.server.enums.Role;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
