@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  app:
+    image: ${DOCKER_REPOSITORY}
+    build:
+      context: .  # Assuming Dockerfile is in the same directory
+    ports:
+      - "8000:8080"  # Maps port 8000 of the host to port 8080 of the container
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/rentease
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - db  # Ensures the database service is started before the application
+    networks:
+      - app-network
+
+  db:
+    image: postgres:15-alpine  # Use a lightweight PostgreSQL image
+    environment:
+      POSTGRES_DB: rentease
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"  # Exposes PostgreSQL port for external use (optional)
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
