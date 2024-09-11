@@ -7,6 +7,8 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhubpwd')  // DockerHub credentials from Jenkins credentials store
         DOCKERHUB_USER = 'amritmaurya1504'  // DockerHub username
         IMAGE_NAME = 'rentease-backend'  // Image name
+        DOCKER_PORT = 8000  // Port to expose the app
+        CONTAINER_NAME = 'rentease-backend'
         DOCKER_REPOSITORY = "${DOCKERHUB_USER}/${IMAGE_NAME}"
     }
     stages {
@@ -48,7 +50,10 @@ pipeline {
                 script {
                     try {
                         // Stop and remove any existing container with the same name
-                        sh "docker-compose down || true"
+                        sh "docker stop ${CONTAINER_NAME} || true"
+                        sh "docker rm ${CONTAINER_NAME} || true"
+                        
+                        // Remove old image
                         sh "docker rmi -f ${DOCKER_REPOSITORY} || true"
                     } catch (Exception e) {
                         echo "No existing Docker container or image to remove."
@@ -59,10 +64,8 @@ pipeline {
         stage('DEPLOY TO DIGITAL OCEAN') {
             steps {
                 script {
-                    sh """
-                            # Run Docker Compose to start both the application and PostgreSQL containers
-                            docker-compose up -d
-                        """
+                    // Ensure docker-compose is available and accessible
+                    sh 'docker-compose -f docker-compose.yml up -d'
                 }
             }
         }
