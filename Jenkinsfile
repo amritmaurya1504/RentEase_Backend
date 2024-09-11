@@ -64,13 +64,25 @@ pipeline {
         stage('DEPLOY TO DIGITAL OCEAN') {
             steps {
                 script {
-                    sh """
-                        # Pull the latest Docker image
-                        docker pull ${DOCKER_REPOSITORY}
-                        
-                        # Run the new Docker container
-                        docker run -d -p ${DOCKER_PORT}:8080 --name ${CONTAINER_NAME} ${DOCKER_REPOSITORY}
-                    """
+                    withCredentials([
+                        string(credentialsId: 'db-password', variable: 'DB_PASSWORD'),
+                        string(credentialsId: 'db-url', variable: 'DB_URL'),
+                        string(credentialsId: 'db-username', variable: 'DB_USERNAME'),
+                        string(credentialsId: 'env', variable: 'ENV')
+                    ]) {
+                        sh """
+                            # Pull the latest Docker image
+                            docker pull ${DOCKER_REPOSITORY}
+                            
+                            # Run the new Docker container with environment variables
+                            docker run -d -p ${DOCKER_PORT}:8000 \
+                                -e DB_PASSWORD=${DB_PASSWORD} \
+                                -e DB_URL=${DB_URL} \
+                                -e DB_USERNAME=${DB_USERNAME} \
+                                -e ENV=${ENV} \
+                                --name ${CONTAINER_NAME} ${DOCKER_REPOSITORY}
+                        """
+                    }
                 }
             }
         }
