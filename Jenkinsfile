@@ -7,7 +7,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhubpwd')  // DockerHub credentials from Jenkins credentials store
         DOCKERHUB_USER = 'amritmaurya1504'  // DockerHub username
         IMAGE_NAME = 'rentease-backend'  // Image name
-        DOCKER_PORT = 8000  // Port to expose the app
+        DOCKER_PORT = 9000  // Port to expose the app
         CONTAINER_NAME = 'rentease-backend'
         DOCKER_REPOSITORY = "${DOCKERHUB_USER}/${IMAGE_NAME}"
     }
@@ -71,11 +71,8 @@ pipeline {
                         string(credentialsId: 'env', variable: 'ENV')
                     ]) {
                         sh """
-                            # Pull the latest Docker image
-                            docker pull ${DOCKER_REPOSITORY}
-                            
                             # Run the new Docker container with environment variables
-                            docker run -d -p ${DOCKER_PORT}:8000 \
+                            docker run -d -p ${DOCKER_PORT}:9000 \
                                 -e DB_PASSWORD=${DB_PASSWORD} \
                                 -e DB_URL=${DB_URL} \
                                 -e DB_USERNAME=${DB_USERNAME} \
