@@ -2,6 +2,7 @@ package com.rentease_server.server.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.*;
 
 @Entity(name = "property_table")
 @Getter
@@ -42,5 +43,8 @@ public class Property {
     @ManyToOne
     @JoinColumn(name = "landlord_id")
     private Landlord landlord;
+
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Booking> bookings;
 
 }
