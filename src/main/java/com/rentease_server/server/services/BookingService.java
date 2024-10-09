@@ -7,7 +7,7 @@ import java.util.*;
 
 public interface BookingService {
     
-    BookingResDTO createBooking(BookingReqDTO bookingReqDTO);
+    BookingResDTO createBooking(BookingReqDTO bookingReqDTO, String tenantId, String propertId);
     BookingResDTO getSingleBooking(String bookingId);
     List<BookingResDTO> getBookingsOfProperty(String propertyId);
     List<BookingResDTO> getBookingsOfLandlord(String landlordId);

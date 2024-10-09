@@ -37,6 +37,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(apiResponse, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(PropertyAlreadyBookedException.class)
+    public ResponseEntity<ExceptionResponse> handlePropertyAlreadyBooked(PropertyAlreadyBookedException ex) {
+        String msg = ex.getMessage();
+        ExceptionResponse apiResponse = ExceptionResponse.builder()
+                .message(msg)
+                .success(false) // Set to false for errors
+                .status(HttpStatus.CONFLICT) // Use HttpStatus value for the status code
+                .build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(RoleNotExistException.class)
     public ResponseEntity<ExceptionResponse> handlerRoleNotExistException(RoleNotExistException ex) {
         String msg = ex.getMessage();

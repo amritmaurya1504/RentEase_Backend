@@ -19,8 +19,8 @@ public class Payment {
     private String paymentDate;     
     private String paymentStatus;          
 
-    @ManyToOne
-    @JoinColumn(name = "booking_id")
-    private Booking booking;             
+    // @ManyToOne
+    // @JoinColumn(name = "booking_id")
+    // private Booking booking;             
 }
 

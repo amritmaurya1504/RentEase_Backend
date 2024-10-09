@@ -28,7 +28,7 @@ public class Booking {
     private double deposit;
     private double rent;
     private String cancelationDate;
-    private String isApprovedByLandlord;
+    private boolean isApprovedByLandlord;
 
     @ManyToOne
     @JoinColumn(name = "tenand_id")
@@ -38,6 +38,4 @@ public class Booking {
     @JoinColumn(name = "property_id")
     private Property property;
 
-    @OneToMany(mappedBy = "booking")
-    private List<Payment> payemets;
 }
