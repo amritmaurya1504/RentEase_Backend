@@ -26,8 +26,12 @@ import io.swagger.v3.oas.annotations.servers.Server;
                         url = "http://localhost:8000"
                 ),
                 @Server(
-                        description = "Prod Environment",
-                        url = "https://renteasebackend-production.up.railway.app"
+                        description = "Prod Environment (HTTPS)",
+                        url = "https://rentease.site"
+                ),
+                @Server(
+                        description = "Prod Environment (HTTP)",
+                        url = "http://rentease.site"
                 )
         },
         security = @SecurityRequirement(name = "Bearer Authentication")
