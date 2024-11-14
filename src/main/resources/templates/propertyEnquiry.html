@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+             font-family: Arial, sans-serif;
+             background-color: #f4f4f4;
+             margin: 0;
+             padding: 0;
+         }
+         .email-container {
+             max-width: 600px;
+             margin: 0 auto;
+             background-color: #ffffff;
+             border: 1px solid #e0e0e0;
+             border-radius: 8px;
+             overflow: hidden;
+         }
+         .header {
+             background-color: #0369a1;
+             color: #ffffff;
+             text-align: center;
+             padding: 20px;
+         }
+         .header img {
+             max-width: 150px;
+             height: auto;
+         }
+         .content {
+             padding: 20px;
+             color: #333333;
+             font-size: 16px;
+             line-height: 1.6;
+         }
+         .content p {
+             margin: 0 0 15px;
+         }
+         .property-info {
+             background-color: #f9f9f9;
+             padding: 15px;
+             border-radius: 8px;
+             margin-bottom: 20px;
+         }
+         .property-info p {
+             margin: 5px 0;
+             color: #555555;
+         }
+         .button-container {
+             text-align: center;
+             margin-top: 20px;
+         }
+         .button {
+             background-color: #0369a1;
+             color: #ffffff;
+             padding: 10px 20px;
+             border-radius: 5px;
+             text-decoration: none;
+             font-size: 16px;
+         }
+         .button:hover {
+             background-color: #0369a1;
+         }
+         .footer {
+             padding: 15px;
+             text-align: center;
+             font-size: 12px;
+             color: #777777;
+             border-top: 1px solid #e0e0e0;
+         }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="header">
+        <img src="https://res.cloudinary.com/amritrajmaurya/image/upload/v1731570482/acb1yynt5vlhrgz04xds.png" alt="RentEase Logo">
+    </div>
+    <div class="content">
+        <p>Hello [[${ownerName}]],</p>
+        <p>You have received a new enquiry from a potential client. Here are the details:</p>
+
+        <div class="property-info">
+            <p><strong>Name:</strong> [[${clientName}]]</p>
+            <p><strong>Email:</strong> [[${clientEmail}]]</p>
+            <p><strong>Message:</strong> [[${clientMessage}]]</p>
+        </div>
+
+        <p>Please click the button below to view the property for which the client is enquiring:</p>
+
+        <div class="button-container">
+            <a th:href="@{${propertyLink}}" class="button" style="color: white;" >View Property</a>
+        </div>
+
+        <p style="margin-top: 10px;">If you have any questions or need assistance, feel free to contact us.</p>
+    </div>
+
+    <div class="footer">
+        <p>Thank you for using RentEase!</p>
+    </div>
+</div>
+</body>
+</html>

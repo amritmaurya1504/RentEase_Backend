@@ -1,10 +1,12 @@
 package com.rentease_server.server.controllers;
 
+import com.rentease_server.server.dtos.requestdtos.EmailEnquiryDTO;
 import com.rentease_server.server.dtos.requestdtos.PropertyReqDTO;
 import com.rentease_server.server.dtos.commondtos.PropertyUpdateDTO;
 import com.rentease_server.server.dtos.requestdtos.PropertyFilterDTO;
 import com.rentease_server.server.dtos.responsedtos.PropertyResDTO;
 import com.rentease_server.server.payloads.APIResponse;
+import com.rentease_server.server.services.EmailService;
 import com.rentease_server.server.services.PropertyService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -23,6 +25,8 @@ public class PropertyController {
 
     @Autowired
     private PropertyService propertyService;
+
+
 
     @PostMapping("/{landlordId}")
     public APIResponse<PropertyResDTO> addProperty(@PathVariable String landlordId, @Valid @RequestBody PropertyReqDTO propertyDTO){
@@ -101,6 +105,5 @@ public class PropertyController {
         return new APIResponse<>(data.isEmpty() ? "No Property listed with given filters !" : + data.size() + " Data Fetched successfully!" , true,
                 HttpStatus.OK, data);
     }
-
 
 }
